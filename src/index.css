@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+.font-mono-code {
+  font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.animate-scanline {
+  animation: scanline 4s linear infinite;
+}
+
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-radar {
+  animation: radar-sweep 3s linear infinite;
+}

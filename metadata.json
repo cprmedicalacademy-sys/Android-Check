@@ -1,0 +1,6 @@
+{
+  "name": "SecureLink - Remote Diagnostic Prank Simulator",
+  "description": "An entertaining and harmless cybersecurity prank simulation web app disguised as a remote device diagnostic tool with interactive mock terminal logs and an instant prank reveal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
