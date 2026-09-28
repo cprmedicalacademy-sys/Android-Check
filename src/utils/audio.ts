@@ -4,7 +4,7 @@ class SoundEffects {
   private ctx: AudioContext | null = null;
   public enabled: boolean = true;
 
-  private getContext(): AudioContext | null {
+  private async getContextReady(): Promise<AudioContext | null> {
     if (!this.ctx && typeof window !== 'undefined') {
       const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (AudioCtx) {
@@ -12,15 +12,19 @@ class SoundEffects {
       }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume().catch(() => {});
+      try {
+        await this.ctx.resume();
+      } catch {
+        // audio resumption handled gracefully
+      }
     }
     return this.ctx;
   }
 
-  playBlip() {
+  async playBlip() {
     if (!this.enabled) return;
     try {
-      const ctx = this.getContext();
+      const ctx = await this.getContextReady();
       if (!ctx) return;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -41,10 +45,10 @@ class SoundEffects {
     }
   }
 
-  playWarning() {
+  async playWarning() {
     if (!this.enabled) return;
     try {
-      const ctx = this.getContext();
+      const ctx = await this.getContextReady();
       if (!ctx) return;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -65,10 +69,10 @@ class SoundEffects {
     }
   }
 
-  playFanfare() {
+  async playFanfare() {
     if (!this.enabled) return;
     try {
-      const ctx = this.getContext();
+      const ctx = await this.getContextReady();
       if (!ctx) return;
       const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
       notes.forEach((freq, i) => {
@@ -92,66 +96,71 @@ class SoundEffects {
   }
 
   // Cartoonish playful laughing sound synthesis (Ha-Ha-Ha-Ha-Ha!)
-  playLaugh() {
+  async playLaugh() {
     if (!this.enabled) return;
     try {
-      const ctx = this.getContext();
+      const ctx = await this.getContextReady();
       if (!ctx) return;
       const now = ctx.currentTime;
 
       // Play joyful fanfare chime first
       this.playFanfare();
 
-      // Series of staccato laughter bursts ("Ha - Ha - Ha - Ha - Ha - Ha - Ha")
+      // Series of rhythmic laughing bursts ("Hee-Hee-Hee! Ha-Ha-Ha-Ha-Ha!")
       const bursts = [
-        { delay: 0.15, freq: 540, dur: 0.12 },
-        { delay: 0.32, freq: 580, dur: 0.12 },
-        { delay: 0.49, freq: 550, dur: 0.12 },
-        { delay: 0.66, freq: 510, dur: 0.13 },
-        { delay: 0.83, freq: 470, dur: 0.13 },
-        { delay: 1.01, freq: 440, dur: 0.14 },
-        { delay: 1.20, freq: 400, dur: 0.16 },
-        { delay: 1.42, freq: 360, dur: 0.22 },
+        // Quick opening chuckle
+        { delay: 0.12, freq: 580, dur: 0.11, gainVal: 0.15 },
+        { delay: 0.26, freq: 620, dur: 0.11, gainVal: 0.16 },
+        { delay: 0.40, freq: 590, dur: 0.11, gainVal: 0.16 },
+        // Belly laugh bursts
+        { delay: 0.56, freq: 540, dur: 0.13, gainVal: 0.18 },
+        { delay: 0.72, freq: 500, dur: 0.13, gainVal: 0.18 },
+        { delay: 0.88, freq: 460, dur: 0.14, gainVal: 0.17 },
+        { delay: 1.05, freq: 420, dur: 0.14, gainVal: 0.16 },
+        // Ending snicker & chuckle
+        { delay: 1.24, freq: 480, dur: 0.12, gainVal: 0.15 },
+        { delay: 1.40, freq: 440, dur: 0.13, gainVal: 0.14 },
+        { delay: 1.60, freq: 380, dur: 0.20, gainVal: 0.13 },
       ];
 
-      bursts.forEach(({ delay, freq, dur }) => {
-        const osc = ctx.createOscillator();
+      bursts.forEach(({ delay, freq, dur, gainVal }) => {
+        const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
         const gain = ctx.createGain();
         const filter = ctx.createBiquadFilter();
 
-        // Bandpass filter to shape vowel formant like a human "Ha"
+        // Bandpass filter to shape vowel formant like a human voice laughing
         filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(950, now + delay);
-        filter.Q.setValueAtTime(3.0, now + delay);
+        filter.frequency.setValueAtTime(1050, now + delay);
+        filter.Q.setValueAtTime(2.5, now + delay);
 
-        osc.type = 'sawtooth';
+        osc1.type = 'sawtooth';
         osc2.type = 'triangle';
 
         // Frequency sweep downwards during each "ha"
-        osc.frequency.setValueAtTime(freq, now + delay);
-        osc.frequency.exponentialRampToValueAtTime(freq * 0.75, now + delay + dur);
+        osc1.frequency.setValueAtTime(freq, now + delay);
+        osc1.frequency.exponentialRampToValueAtTime(freq * 0.74, now + delay + dur);
 
         osc2.frequency.setValueAtTime(freq * 1.5, now + delay);
-        osc2.frequency.exponentialRampToValueAtTime(freq * 1.5 * 0.75, now + delay + dur);
+        osc2.frequency.exponentialRampToValueAtTime(freq * 1.5 * 0.74, now + delay + dur);
 
-        // Amplitude envelope: quick attack and natural decay
-        gain.gain.setValueAtTime(0.001, now + delay);
-        gain.gain.linearRampToValueAtTime(0.14, now + delay + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+        // Amplitude envelope: quick attack and natural laughter decay
+        gain.gain.setValueAtTime(0.0001, now + delay);
+        gain.gain.linearRampToValueAtTime(gainVal, now + delay + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + dur);
 
-        osc.connect(filter);
+        osc1.connect(filter);
         osc2.connect(filter);
         filter.connect(gain);
         gain.connect(ctx.destination);
 
-        osc.start(now + delay);
+        osc1.start(now + delay);
         osc2.start(now + delay);
-        osc.stop(now + delay + dur);
+        osc1.stop(now + delay + dur);
         osc2.stop(now + delay + dur);
       });
     } catch {
-      // Audio not permitted
+      // Audio not permitted or failed
     }
   }
 }
