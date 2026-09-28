@@ -20,7 +20,7 @@ export const RevealModal: React.FC<RevealModalProps> = ({
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    sounds.playFanfare();
+    sounds.playLaugh();
 
     // Confetti cannon
     const end = Date.now() + 2 * 1000;
@@ -79,10 +79,14 @@ export const RevealModal: React.FC<RevealModalProps> = ({
         <div className="absolute -bottom-12 -right-12 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Celebration Icon */}
-        <div className="w-20 h-20 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 text-pink-400 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 border border-pink-500/30 shadow-lg relative">
+        <button
+          onClick={() => sounds.playLaugh()}
+          title="হাসির সাউন্ড আবার শুনুন"
+          className="w-20 h-20 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 text-pink-400 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 border border-pink-500/30 shadow-lg relative cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+        >
           <PartyPopper className="w-10 h-10 text-pink-400 animate-bounce" />
-          <span className="absolute -top-1 -right-1 text-2xl">😂</span>
-        </div>
+          <span className="absolute -top-1 -right-1 text-2xl animate-spin" style={{ animationDuration: '6s' }}>😂</span>
+        </button>
 
         <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3 tracking-tight">
           {t.prankTitle}

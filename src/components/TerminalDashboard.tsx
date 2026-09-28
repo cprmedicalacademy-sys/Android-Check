@@ -121,14 +121,11 @@ export const TerminalDashboard: React.FC<TerminalDashboardProps> = ({
           </p>
         </div>
 
-        {/* Big Reveal Button */}
-        <button
-          onClick={onReveal}
-          className="w-full sm:w-auto bg-gradient-to-r from-red-600/30 to-pink-600/30 hover:from-red-600/50 hover:to-pink-600/50 text-red-300 hover:text-white border border-red-500/40 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition shadow-lg shadow-red-500/10 flex items-center justify-center gap-2 cursor-pointer"
-        >
-          <Sparkles className="w-4 h-4 text-amber-300" />
-          <span>{t.revealBtn}</span>
-        </button>
+        {/* Active Telemetry Status Badge */}
+        <div className="flex items-center gap-2 bg-red-950/40 border border-red-500/30 px-3.5 py-1.5 rounded-xl font-mono text-xs text-red-400">
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span>LIVE TELEMETRY STREAM</span>
+        </div>
       </div>
 
       {/* Live Streaming Simulation Grid */}

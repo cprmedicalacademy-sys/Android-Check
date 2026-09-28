@@ -8,7 +8,7 @@ export const translations = {
     secureConnection: 'SECURE CONNECTION',
     soundOn: 'সাউন্ড চালু',
     soundOff: 'সাউন্ড বন্ধ',
-    createPrankLink: 'বন্ধুর জন্য প্র্যাংক লিংক তৈরি করুন 🔗',
+    createPrankLink: 'লিংক শেয়ার করুন',
     
     // Step 1: Entry Form
     formTitle: 'রিমোট ডিভাইস ডায়াগনস্টিক',
@@ -39,7 +39,7 @@ export const translations = {
     filesTransferred: 'files transferred',
     terminalInit: 'Initializing secure socket connection...',
     terminalHandshake: (name: string) => `Handshaking with target device: ${name}...`,
-    emergencyNotice: 'এটি একটি সিমুলেশন প্র্যাংক। যেকোনো সময় প্রকাশ করতে উপরের বাটনে ক্লিক করুন।',
+    emergencyNotice: 'সিমুলেশন চলছে... প্রক্রিয়া সম্পন্ন হলে ফলাফল স্বয়ংক্রিয়ভাবে প্রদর্শিত হবে।',
 
     // Logs
     logs: (name: string, device: string) => [
@@ -77,7 +77,7 @@ export const translations = {
     secureConnection: 'SECURE CONNECTION',
     soundOn: 'Sound ON',
     soundOff: 'Sound OFF',
-    createPrankLink: 'Create Custom Friend Link 🔗',
+    createPrankLink: 'Share Link',
     
     // Step 1: Entry Form
     formTitle: 'Remote Device Diagnostic',
@@ -108,7 +108,7 @@ export const translations = {
     filesTransferred: 'files transferred',
     terminalInit: 'Initializing secure socket connection...',
     terminalHandshake: (name: string) => `Handshaking with target device: ${name}...`,
-    emergencyNotice: 'This is a harmless prank simulator. Click Reveal Prank anytime.',
+    emergencyNotice: 'Simulation in progress... results will appear automatically upon completion.',
 
     // Logs
     logs: (name: string, device: string) => [
